@@ -1,0 +1,12 @@
+.nav__links{
+    display: flex;
+}
+
+.user__info {
+    padding-left: 40px;
+}
+
+.user__info span {
+    color: rgb(27, 80, 27);
+    font-weight: bold;
+}

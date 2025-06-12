@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.logo span {
+    font-size: 25px;
+    font-weight: 800;
+    color: rgb(27, 80, 27);
+}
+
+#header__container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 8vh;
+    padding: 0px 50px;
+}
+
+
+.nav__links a{
+    text-decoration: none;
+    margin: 0px 10px;
+    color: rgb(27, 80, 27);
+}
+
+#sign__up {
+    background-color: rgb(4, 184, 4);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#sign__up:hover{
+    background-color: rgb(58, 204, 58);
+
+}
+
+#login {
+    background-color: rgb(230, 229, 229);
+    color: rgb(27, 80, 27);
+    padding: 12px 24px;
+    border-radius: 50px;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#login:hover{
+    background-color: rgb(167, 240, 167);
+}
+
+.mobile__menu__icon {
+    display: none;
+}
+
+.mobile__menu__icon i {
+    color: rgb(27, 80, 27);
+    font-size: 30px;
+}
+
+@media only screen and  (max-width: 970px) {
+    .nav__links {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: rgb(188, 241, 188);
+        height: 50vh;
+        gap: 0;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+
+    .nav__links a {
+        margin-bottom: 25px;
+    }
+
+    #login, #sign__up {
+        width: 150px;
+    }
+
+    .mobile__menu__icon{
+        display: block;
+    }
+} 

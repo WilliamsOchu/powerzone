@@ -1,0 +1,82 @@
+#signup__section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0px 0px 0px;
+}
+
+.email,
+.phone__no,
+.password,
+.confirm__password {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.signup__header h1 {
+    font-weight: 700;
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: rgb(27, 80, 27);
+}
+
+label {
+    margin-bottom: 5px;
+    color: rgb(27, 80, 27);
+}
+
+input {
+    background-color: rgb(230, 229, 229);
+    border: none;
+    border-radius: 30px;
+    width: 400px;
+    height: 50px;
+    padding-left: 20px;
+    color: rgb(66, 66, 66);
+    font-size: small;
+    letter-spacing: 1.8px;
+}
+
+::placeholder {
+    font-style: italic;
+    color: rgb(173, 172, 172)
+}
+
+:focus {
+    outline: none;
+}
+
+.signup__btn button {
+   border: none;
+    background-color: rgb(141, 221, 141);
+    color: rgb(27, 80, 27);
+    padding: 12px 24px;
+    border-radius: 50px;
+    width: 200px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.signup__btn button:hover {
+    background-color: rgb(84, 202, 84);
+}
+
+.login__link {
+    text-align: center;
+}
+
+.login__link span {
+    font-style: italic;
+    font-weight: 400;
+    font-size: 15px;
+    color: rgb(173, 172, 172);
+    letter-spacing: 1.8px;
+}
+
+.login__link span a {
+    text-decoration: underline;
+    color: rgb(27, 80, 27);
+    font-weight: 700;
+}
