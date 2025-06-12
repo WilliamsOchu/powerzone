@@ -1,1 +1,5 @@
 supabase
+python-dotenv 
+psycopg2
+os
+sqlalchemy
