@@ -1,13 +1,13 @@
 Pages to be developed 
 
 Signup ... done
-OTP for Signup ... 
+OTP for Signup ... done
 
 Login ... done 
 
-Reset Password ... 
-OTP for Reset Password ...  
-New Password ...  
+Reset Password ... done
+OTP for Reset Password ...  done
+New Password ...  done
 <<<<<<< HEAD
 
 =======
