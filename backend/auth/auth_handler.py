@@ -97,7 +97,7 @@ def generate_password_reset_token():
 
 def save_password_reset_token(db: Session, user_id: int, token: str):
     """Saves the generated token to the database with an expiry."""
-    expires_at = datetime.now(timezone.utc) + timedelta(minutes=PASSWORD_RESET_TOKEN_EXPIRE_MINUTES)
+    expires_at = datetime.now(timezone.utc) + timedelta(minutes=int(PASSWORD_RESET_TOKEN_EXPIRE_MINUTES))
     db_token = PasswordResetToken(
         user_id=user_id,
         token=token,
@@ -144,7 +144,7 @@ def generate_six_digit_otp():
 
 def save_pending_user_registration(db: Session, phone_num: str, hashed_password: str, otp: str):
     """Saves temporary user registration data with an OTP."""
-    otp_expires_at = datetime.now(timezone.utc) + timedelta(minutes=SIGNUP_OTP_EXPIRES)
+    otp_expires_at = datetime.now(timezone.utc) + timedelta(minutes=int(SIGNUP_OTP_EXPIRES))
     pending_user = PendingUser(
         phone_num=phone_num,
         hashed_password=hashed_password,
@@ -176,4 +176,4 @@ async def send_signup_otp(phone_num: str, otp: str):
     Simulate sending a 6-digit OTP to authorize signup
     """
     print("Sending 6 digit otp to: {}\n".format(phone_num))
-    print("This OTP is valid only for: {}\nTo complete your Signup use this OTP: {}".format(SIGNUP_OTP_EXPIRES, otp))
+    print("This OTP is valid only for: {} minutes\nTo complete your Signup use this OTP: {}".format(SIGNUP_OTP_EXPIRES, otp))

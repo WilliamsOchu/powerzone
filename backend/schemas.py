@@ -1,6 +1,6 @@
 # schemas.py
 import re # Import the regular expression module
-from pydantic import BaseModel, EmailStr, model_validator 
+from pydantic import BaseModel, EmailStr, model_validator, Field
 
 
 
@@ -14,7 +14,14 @@ class TokenData(BaseModel):
 
 
 class UserCreate(BaseModel):
-    phone_num: str
+    phone_num: str = Field(
+        min_length=10,
+        max_length=10,
+        pattern=r"^\d{10}$",  # Ensures exactly 10 digits (0-9)
+        description="An 10-digit number as a string input."
+    )
+
+
     password: str
     confirm_password: str
 
