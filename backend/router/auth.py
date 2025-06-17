@@ -19,7 +19,7 @@ from ..auth.auth_handler import (
     get_pending_user_by_phone_num, delete_pending_user, send_signup_otp
 )
 from ..databse import get_db
-from ..schemas import Token, UserCreate, UserResponse, ForgotPasswordRequest, ResetPasswordRequest, VerifyOTPRequest, LoginOTPRequest, VerifyLoginOTPRequest
+from ..schemas import Token, UserCreate, UserResponse, ForgotPasswordRequest, ResetPasswordRequest, VerifyOTPRequest #LoginOTPRequest, VerifyLoginOTPRequest
 from ..models import User, PendingUser
 
 

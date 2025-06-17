@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 import os
 from typing import Optional
-from jose import JWTError
+#from jose import JWTError
 import random
 
 
