@@ -14,7 +14,7 @@ class PendingUser(Base):
     hashed_password = Column(String)                    # The hashed password
     otp = Column(String)                                # The 6-digit OTP
     otp_expires_at = Column(DateTime(timezone=True))    # When the OTP expires
-
+    attempt_reg_time = Column(DateTime(timezone=True))
 
 
 class User(Base):

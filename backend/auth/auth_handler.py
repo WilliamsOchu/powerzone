@@ -145,11 +145,13 @@ def generate_six_digit_otp():
 def save_pending_user_registration(db: Session, phone_num: str, hashed_password: str, otp: str):
     """Saves temporary user registration data with an OTP."""
     otp_expires_at = datetime.now(timezone.utc) + timedelta(minutes=int(SIGNUP_OTP_EXPIRES))
+    attempt_reg_time = datetime.now(timezone.utc)
     pending_user = PendingUser(
         phone_num=phone_num,
         hashed_password=hashed_password,
         otp=otp,
-        otp_expires_at=otp_expires_at
+        otp_expires_at=otp_expires_at,
+        attempt_reg_time=attempt_reg_time
     )
     db.add(pending_user)
     db.commit()

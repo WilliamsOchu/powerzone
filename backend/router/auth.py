@@ -67,7 +67,7 @@ async def register_user_initiate(user_data: UserCreate, db: Session = Depends(ge
 @router.post("/verify_signup", response_model=UserResponse)
 async def verify_signup_otp(otp_request: VerifyOTPRequest, db: Session = Depends(get_db)):
     """
-    Verifies the 5-digit OTP sent to the user's email and completes registration.
+    Verifies the 6-digit OTP sent to the user's phone and completes registration.
     """
     # 1. Get the pending user data using the email (which also checks for expiry)
     pending_user = get_pending_user_by_phone_num(db, otp_request.phone_num)
