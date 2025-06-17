@@ -103,3 +103,28 @@ async def verify_signup_otp(otp_request: VerifyOTPRequest, db: Session = Depends
 
     db.refresh(new_user) # Refresh to get the auto-generated ID etc.
     return new_user # Return the newly created user's data
+
+
+@router.post("/login", response_model=Token) # Removed response_model=Token for this step
+async def request_login(
+    form_data: OAuth2PasswordRequestForm = Depends(), # Still accepts standard form data
+    db: Session = Depends(get_db)
+) -> Token:
+    """
+    Authenticates user credentials.
+    """
+    # 1. Authenticate user credentials
+    user = authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # 4. Generate and return the access token
+    access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
+    access_token = create_access_token(
+        data={"sub": user.phone_num}, expires_delta=access_token_expires
+    )
+    return Token(access_token=access_token, token_type="bearer")
