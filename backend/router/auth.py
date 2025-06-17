@@ -12,11 +12,11 @@ from ..auth.auth_handler import (
     authenticate_user, ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token,
     get_user, get_password_hash,
     generate_password_reset_token, save_password_reset_token,
-    get_password_reset_token, mark_token_as_used, send_password_reset_email,
+    get_password_reset_token, mark_token_as_used,
     update_user_password,
     # NEW IMPORTS FOR EMAIL VERIFICATION
     generate_six_digit_otp, save_pending_user_registration,
-    get_pending_user_by_phone_num, delete_pending_user,
+    get_pending_user_by_phone_num, delete_pending_user, send_signup_otp
 )
 from ..databse import get_db
 from ..schemas import Token, UserCreate, UserResponse, ForgotPasswordRequest, ResetPasswordRequest, VerifyOTPRequest, LoginOTPRequest, VerifyLoginOTPRequest
@@ -58,6 +58,7 @@ async def register_user_initiate(user_data: UserCreate, db: Session = Depends(ge
     save_pending_user_registration(db, user_data.phone_num, hashed_password, otp)
 
     # 6. Send OTP to email
-    await send_verification_otp_email(user_data.phone_num, otp)
+    #await send_verification_otp_email(user_data.phone_num, otp)
+    await send_signup_otp(user_data.phone_num, otp)
 
     return {"message": "A 6-digit verification code has been sent to your email. Please verify to complete registration."}
