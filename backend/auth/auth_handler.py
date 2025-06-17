@@ -156,7 +156,7 @@ def save_pending_user_registration(db: Session, phone_num: str, hashed_password:
     db.refresh(pending_user)
     return pending_user
 
-def get_pending_user_by_phone(db: Session, phone_num: str):
+def get_pending_user_by_phone_num(db: Session, phone_num: str):
     """
     Retrieves a pending user by email, ensuring the OTP is not expired.
     """
@@ -170,3 +170,10 @@ def delete_pending_user(db: Session, pending_user_record: PendingUser):
     """Deletes a pending user record after successful verification or expiry."""
     db.delete(pending_user_record)
     db.commit()
+
+async def send_signup_otp(phone_num: str, otp: str):
+    """
+    Simulate sending a 6-digit OTP to authorize signup
+    """
+    print("Sending 6 digit otp to: {}\n".format(phone_num))
+    print("This OTP is valid only for: {}\nTo complete your Signup use this OTP: {}".format(SIGNUP_OTP_EXPIRES, otp))
