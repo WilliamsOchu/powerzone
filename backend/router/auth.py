@@ -16,7 +16,8 @@ from ..auth.auth_handler import (
     update_user_password,
     # NEW IMPORTS FOR EMAIL VERIFICATION
     generate_six_digit_otp, save_pending_user_registration,
-    get_pending_user_by_phone_num, delete_pending_user, send_signup_otp
+    get_pending_user_by_phone_num, delete_pending_user, 
+    send_signup_otp, send_password_reset_token
 )
 from ..databse import get_db
 from ..schemas import Token, UserCreate, UserResponse, ForgotPasswordRequest, ResetPasswordRequest, VerifyOTPRequest #LoginOTPRequest, VerifyLoginOTPRequest
@@ -128,3 +129,92 @@ async def request_login(
         data={"sub": user.phone_num}, expires_delta=access_token_expires
     )
     return Token(access_token=access_token, token_type="bearer")
+
+
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(
+        key="access_token",
+        httponly=True,
+        samesite="lax",
+        secure=True # Set to True in production with HTTPS
+    )
+    return {"message": "Logged out successfully. Please clear your token and redirect."}
+
+
+@router.post("/forgot-password", status_code=status.HTTP_200_OK)
+async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    """
+    Initiates the password reset process.
+    Generates a password reset token and sends it to the user's phone number
+    """
+    user = get_user(db, request.phone_num)
+    if not user:
+        # For security, always return a generic success message
+        # even if the email doesn't exist to prevent user enumeration.
+        return {"message": "If an account with that number exists, a password reset email has been sent."}
+
+    # Generate a unique, secure token
+    reset_token = generate_password_reset_token()
+    
+    # Save the token to the database, linked to the user
+    save_password_reset_token(db, user.id, reset_token)
+
+    # --- Choose between OTP or Reset Link ---
+    # Set this to True for OTP (user types in code) or False for a direct link (user clicks link)
+    #send_as_otp = True
+
+    #if send_as_otp:
+        # Send the raw token as an OTP in the email
+    #    await send_password_reset_email(request.email, reset_token, is_otp=True)
+    #else:
+        # Construct the full reset link for the user to click
+        # IMPORTANT: Replace "http://localhost:3000" with your actual frontend's base URL
+        # The frontend should have a route like /reset-password that expects a 'token' query param
+    #    reset_link = f"http://localhost:3000/reset-password?token={reset_token}&email={request.email}"
+    await send_password_reset_token(request.phone_num, reset_token)
+
+    return {"message": "If an account with that number exists, a password reset OTP has been sent."}
+
+
+@router.post("/reset-password", status_code=status.HTTP_200_OK)
+async def reset_password(request: ResetPasswordRequest, db: Session = Depends(get_db)):
+    """
+    Resets the user's password using the provided token and new password.
+    """
+    # 1. Verify user by phone first
+    user = get_user(db, request.phone_num)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid phone or token." # Generic message for security
+        )
+
+    # 2. Retrieve and validate the token from the database
+    # Check if the token exists, is not expired, and has not been used yet.
+    db_token = get_password_reset_token(db, request.token)
+    
+    if not db_token or db_token.user_id != user.id:
+        # If token is invalid, expired, or doesn't belong to the email provided
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired password reset token."
+        )
+    
+    # Ensure the token hasn't been used already
+    if db_token.is_used:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password reset token has already been used."
+        )
+
+    # 3. Update the user's password
+    update_user_password(db, user, request.new_password)
+
+    # 4. Mark the token as used to prevent replay attacks
+    mark_token_as_used(db, db_token)
+    
+    db.commit() # Commit all changes (password update and token status)
+    db.refresh(user) # Refresh the user object after commit
+
+    return {"message": "Password has been successfully reset."}

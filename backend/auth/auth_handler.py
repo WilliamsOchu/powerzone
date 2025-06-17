@@ -179,3 +179,10 @@ async def send_signup_otp(phone_num: str, otp: str):
     """
     print("Sending 6 digit otp to: {}\n".format(phone_num))
     print("This OTP is valid only for: {} minutes\nTo complete your Signup use this OTP: {}".format(SIGNUP_OTP_EXPIRES, otp))
+
+async def send_password_reset_token(phone_num: str, reset_token: str):
+    """
+    Simulate sending a 6-digit Token to authorize password reset
+    """
+    print("Sending 6 digit OTP to: {}\n".format(phone_num))
+    print("This OTP is valid only for: {} minutes\nTo reset your password use this OTP: {}".format(PASSWORD_RESET_TOKEN_EXPIRE_MINUTES, reset_token))
