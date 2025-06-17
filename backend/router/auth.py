@@ -62,3 +62,42 @@ async def register_user_initiate(user_data: UserCreate, db: Session = Depends(ge
     await send_signup_otp(user_data.phone_num, otp)
 
     return {"message": "A 6-digit verification code has been sent to your email. Please verify to complete registration."}
+
+
+@router.post("/verify_signup", response_model=UserResponse)
+async def verify_signup_otp(otp_request: VerifyOTPRequest, db: Session = Depends(get_db)):
+    """
+    Verifies the 5-digit OTP sent to the user's email and completes registration.
+    """
+    # 1. Get the pending user data using the email (which also checks for expiry)
+    pending_user = get_pending_user_by_phone_num(db, otp_request.phone_num)
+
+    if not pending_user:
+        # This covers cases where email doesn't exist in pending, or OTP has already expired
+        raise HTTPException(status_code=400, detail="No pending registration found for this email or OTP has expired. Please try registering again.")
+
+    # 2. Validate the OTP
+    if pending_user.otp != otp_request.otp:
+        raise HTTPException(status_code=400, detail="Invalid OTP. Please check the code sent to your email.")
+
+    # 3. Double-check OTP expiry (good for robustness, though get_pending_user_by_email already filters)
+    now = datetime.now(timezone.utc)
+    if pending_user.otp_expires_at <= now:
+        delete_pending_user(db, pending_user) # Clean up expired token
+        db.commit()
+        raise HTTPException(status_code=400, detail="OTP has expired. Please initiate registration again to get a new code.")
+
+    # 4. Create the actual user in the User table
+    new_user = User(
+        phone_num=pending_user.phone_num,
+        hashed_password=pending_user.hashed_password
+    )
+    db.add(new_user)
+    db.commit() # Commit the new user creation
+
+    # 5. Delete the pending user record as registration is complete
+    delete_pending_user(db, pending_user)
+    db.commit() # Commit the deletion of the pending user
+
+    db.refresh(new_user) # Refresh to get the auto-generated ID etc.
+    return new_user # Return the newly created user's data
