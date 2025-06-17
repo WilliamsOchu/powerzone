@@ -1,2 +1,2 @@
 .env
-alembic.ini
+/backend/alembic.ini
