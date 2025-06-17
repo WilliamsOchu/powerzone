@@ -88,9 +88,11 @@ async def verify_signup_otp(otp_request: VerifyOTPRequest, db: Session = Depends
         raise HTTPException(status_code=400, detail="OTP has expired. Please initiate registration again to get a new code.")
 
     # 4. Create the actual user in the User table
+    registered_time = datetime.now(timezone.utc)
     new_user = User(
         phone_num=pending_user.phone_num,
-        hashed_password=pending_user.hashed_password
+        hashed_password=pending_user.hashed_password,
+        registered_time=registered_time
     )
     db.add(new_user)
     db.commit() # Commit the new user creation

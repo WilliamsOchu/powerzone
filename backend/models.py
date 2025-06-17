@@ -23,6 +23,7 @@ class User(Base):
     phone_num = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    registered_time = Column(DateTime(timezone=True))
     reset_tokens = relationship("PasswordResetToken", back_populates="user")
 
 
