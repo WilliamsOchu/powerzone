@@ -3,3 +3,12 @@ python-dotenv
 psycopg2
 os
 sqlalchemy
+fastapi[standard]
+uvicorn
+pydantic
+databases
+python-jose[cryptography]
+passlib[bcrypt]
+PyJWT
+python-decouple
+python-multipart
