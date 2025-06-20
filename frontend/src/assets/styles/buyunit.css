@@ -1,0 +1,112 @@
+.meter__number__form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+form input,
+form select {
+    width: 400px;
+    height: 50px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    color: rgb(66, 66, 66);
+    font-size: small;
+    letter-spacing: 1.8px;
+}
+
+::placeholder,
+select option:first-child {
+    font-style: italic;
+}
+
+.confirm__btn button {
+    border: none;
+    background-color: rgb(141, 221, 141);
+    color: rgb(27, 80, 27);
+    padding: 12px 24px;
+    border-radius: 30px;
+    width: 400px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.confirm__btn button:hover {
+    background-color: rgb(84, 202, 84);
+}
+
+
+form legend {
+    font-weight: 700;
+    font-size: 30px;
+    margin-bottom: 35px;
+    color: rgb(27, 80, 2);
+
+}
+
+:focus {
+    outline: none;
+}
+
+.close-icon-container {
+    text-align: right;
+    padding: 10px;
+}
+
+#close__icon {
+    text-decoration: none;
+    color: rgb(27, 80, 27);
+}
+
+#error__message {
+    background-color: rgb(243, 164, 164);
+    opacity: 0.8;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+    color: rgb(1, 20, 1);
+    display: none;
+}
+
+#modal {
+    background-color: rgb(219, 236, 219);
+    height: 600px;
+    width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.3s ease-in-out;
+}
+
+#modal.open {
+    z-index: 999;
+    opacity: 0.98;
+}
+
+
+.unit__method {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.by__money, .by__kwh {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.user__details{
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+

@@ -6,7 +6,7 @@
     margin: 90px 0px 0px 0px;
 }
 
-.mail,
+.phone__number,
 .password {
     display: flex;
     flex-direction: column;

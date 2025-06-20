@@ -1,5 +1,7 @@
 .nav__links{
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .user__info {
@@ -9,4 +11,18 @@
 .user__info span {
     color: rgb(27, 80, 27);
     font-weight: bold;
+}
+
+#logout__btn {
+    border: none;
+    background-color: rgb(141, 221, 141);
+    color: rgb(27, 80, 27);
+    padding: 12px 24px;
+    border-radius: 50px;
+    margin-left: 20px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#logout__btn:hover {
+        background-color: rgb(84, 202, 84);
 }
